@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetFlix | Movie Details</title>
+</head>
+<body>
+
+    <h1>{{ movie.movie }}</h1>
+
+    <div>
+        <img src="{{ movie.poster.url }}" alt="{{ movie.movie }}" width="300">
+    </div>
+
+    <div>
+        <p><strong>Category:</strong> {{ movie.category.category }}</p>
+
+        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+
+        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+
+        <p><strong>Description:</strong> {{ movie.description }}</p>
+
+        <p>
+            <strong>Trailer:</strong>
+            <a href="{{ movie.trailer_link }}" target="_blank">
+                Watch Trailer
+            </a>
+        </p>
+    </div>
+
+    <a href="{% url 'movie_list' %}">Back to Movies</a>
+
+</body>
+</html>

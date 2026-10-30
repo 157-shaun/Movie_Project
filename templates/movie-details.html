@@ -1,36 +1,88 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NetFlix | Movie Details</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
 
-    <h1>{{ movie.movie }}</h1>
+    <main class="container page-section">
 
-    <div>
-        <img src="{{ movie.poster.url }}" alt="{{ movie.movie }}" width="300">
-    </div>
+        <div class="section-heading">
+            <h1>Movie Details</h1>
+            <p>Explore information about your selected movie.</p>
+        </div>
 
-    <div>
-        <p><strong>Category:</strong> {{ movie.category.category }}</p>
+        <section class="detail-card">
 
-        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+            <div>
+                {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" alt="{{ movie.movie }}" class="detail-poster">
+                {% endif %}
+            </div>
 
-        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+            <div class="detail-content">
 
-        <p><strong>Description:</strong> {{ movie.description }}</p>
+                <h1>{{ movie.movie }}</h1>
 
-        <p>
-            <strong>Trailer:</strong>
-            <a href="{{ movie.trailer_link }}" target="_blank">
-                Watch Trailer
-            </a>
-        </p>
-    </div>
+                <span class="rating">
+                    ★ {{ movie.rating }}/10
+                </span>
 
-    <a href="{% url 'movie_list' %}">Back to Movies</a>
+                <div class="detail-info">
+
+                    <div class="info-item">
+                        <strong>Category</strong>
+                        <span>{{ movie.category.category|default:"Not specified" }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <strong>Release Date</strong>
+                        <span>{{ movie.release_date|default:"Not specified" }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <strong>Rating</strong>
+                        <span>{{ movie.rating }}/10</span>
+                    </div>
+
+                </div>
+
+                <h2>Description</h2>
+
+                <p class="detail-description">
+                    {{ movie.description|default:"No description available." }}
+                </p>
+
+                <div class="detail-actions">
+
+                    {% if movie.trailer_link %}
+                    <a href="{{ movie.trailer_link }}" class="btn" target="_blank" rel="noopener noreferrer">
+                        Watch Trailer
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'edit_movie' movie.pk %}" class="btn">
+                        Update Movie
+                    </a>
+
+                    <a href="{% url 'movie_list' %}" class="btn btn-secondary">
+                        Back to Movies
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
+
 </html>

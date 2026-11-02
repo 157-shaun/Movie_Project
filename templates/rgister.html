@@ -14,7 +14,7 @@
         <h1>Create Account</h1>
         <p>Join MovieHub and explore your favourite movies.</p>
 
-        <form method="POST">
+        <form method="POST" onsubmit="return passwordMatch()">
 
             {% csrf_token %}
 
@@ -104,5 +104,19 @@
     </div>
 
 </main>
+
+<script>
+    function passwordMatch(){
+        passwd=document.getElementById("password").value;
+        con_passwd=document.getElementById("confirm_password").value;
+        if(passwd=con_passwd){
+            return true;
+        }
+        else{
+            alert("Passwords do not match!");
+            return false;
+        }
+    }
+</script>
 
 {% endblock %}

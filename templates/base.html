@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="navbar-inner">
@@ -19,6 +21,8 @@
                 <a href="{% url 'index' %}">Home</a>
 
                 <a href="{% url 'movie_list' %}">Movie List</a>
+                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'login' %}">Login</a>
 
                 <a href="{% url 'add_movie' %}" class="nav-cta">
                     Add Movie
@@ -28,8 +32,9 @@
         </div>
     </nav>
     {% block content %}
-    
+
 
     {% endblock %}
 </body>
+
 </html>

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.contrib import auth
 
 # Create your views here.
 
@@ -20,4 +21,16 @@ def signUp(request):
 
 
 def signIn(request):
+    username=request.POST.get("username")
+    passwd=request.POST.get("password")
+    user=auth.authenticate(username=username,password=passwd)
+    if user is not None:
+        user=auth.login(request,user)
+        return redirect("/")
+        
     return render(request,"login.html")
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect("/")

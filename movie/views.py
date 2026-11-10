@@ -48,6 +48,9 @@ def deleteMovie(request, id):
         movie.delete()
 
     return redirect("movie_list")
+
+
+
 @login_required(login_url="login")
 def updateMovie(request,movie_id):
     categories=Category.objects.all()

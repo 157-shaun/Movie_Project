@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from movie.models import Category
 from movie.models import Movie
 from django.http import HttpResponse
@@ -49,7 +49,14 @@ def deleteMovie(request, id):
 
     return redirect("movie_list")
 
-
+def category_movies(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    movies = Movie.objects.filter(category=category)
+    return render(
+        request,
+        'movie-list.html',
+        {'movies': movies, 'selected_category': category},
+    )
 
 @login_required(login_url="login")
 def updateMovie(request,movie_id):

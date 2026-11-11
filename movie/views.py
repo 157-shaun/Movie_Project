@@ -43,9 +43,8 @@ def movieDetails(request, id):
     })
 @login_required(login_url="login")
 def deleteMovie(request, id):
-    if request.method == "POST":
-        movie = Movie.objects.get(id=id)
-        movie.delete()
+    movie = Movie.objects.get(id=id)
+    movie.delete()
 
     return redirect("movie_list")
 

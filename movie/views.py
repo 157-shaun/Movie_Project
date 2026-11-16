@@ -3,30 +3,65 @@ from movie.models import Category
 from movie.models import Movie
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from actors.models import Actors
+from movie.models import MovieCast
 # Create your views here.
 
 
 def home(request):
     return render(request,"index.html")
 
+
 @login_required(login_url="login")
 def addMovie(request):
-    if request.method=="POST":
-        movie=request.POST["movie"]
-        tr_link=request.POST['trailer_link']
-        cate=request.POST['category']
-        re_date=request.POST['release_date']
-        poster=request.FILES["poster"]
-        desc=request.POST["description"]
-        rating=request.POST["rating"]
-        category=Category.objects.get(id=cate)
-        Movie(movie=movie,trailer_link=tr_link,
-              category=category,release_date=re_date,
-              poster=poster,description=desc,rating=rating).save()
+    if request.method == "POST":
+
+        # Get movie details
+        movie_name = request.POST["movie"]
+        tr_link = request.POST["trailer_link"]
+        cate = request.POST["category"]
+        re_date = request.POST["release_date"]
+        poster = request.FILES["poster"]
+        desc = request.POST["description"]
+        rating = request.POST["rating"]
+
+        # Get category
+        category = Category.objects.get(id=cate)
+
+        # Save movie
+        new_movie = Movie.objects.create(
+            movie=movie_name,
+            trailer_link=tr_link,
+            category=category,
+            release_date=re_date,
+            poster=poster,
+            description=desc,
+            rating=rating
+        )
+
+        # Get selected actors and character names
+        actor_ids = request.POST.getlist("actor_ids")
+        character_names = request.POST.getlist("character_names")
+
+        # Save movie cast
+        for actor_id, character_name in zip(actor_ids, character_names):
+            if actor_id and character_name.strip():
+                MovieCast.objects.create(
+                    movie=new_movie,
+                    actor_id=actor_id,
+                    character_name=character_name.strip()
+                )
+
         return redirect("movie_list")
-    
-    categories=Category.objects.all()
-    return render(request,"add-movie.html",{"categories":categories})
+
+    categories = Category.objects.all()
+    actors = Actors.objects.all()
+
+    return render(request, "add-movie.html", {
+        "categories": categories,
+        "actors": actors
+    })
+
 
 def movieList(request):
     movies = Movie.objects.all()
@@ -36,10 +71,12 @@ def movieList(request):
     })
 @ login_required(login_url="login")
 def movieDetails(request, id):
-    movie = Movie.objects.get(id=id)
+    movie = get_object_or_404(Movie, id=id)
+    cast = MovieCast.objects.filter(movie=movie).select_related('actor')
 
     return render(request, "movie-details.html", {
-        "movie": movie
+        "movie": movie,
+        "cast": cast
     })
 @login_required(login_url="login")
 def deleteMovie(request, id):

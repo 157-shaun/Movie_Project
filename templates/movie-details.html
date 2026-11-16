@@ -7,6 +7,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NetFlix | Movie Details</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* Cast Section */
+        .cast-section {
+            margin-top: 40px;
+        }
+
+        .actor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .actor-card {
+            background: transparent;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 12px;
+        }
+
+        /* Small circular actor image */
+        .actor-image {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            margin: 0 auto 12px;
+        }
+
+        .actor-card h3 {
+            font-size: 16px;
+            margin: 8px 0 5px;
+        }
+
+        .actor-card p {
+            font-size: 14px;
+            color: #aaa;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .actor-list {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .actor-image {
+                width: 90px;
+                height: 90px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -18,6 +73,7 @@
             <p>Explore information about your selected movie.</p>
         </div>
 
+        <!-- Movie Details Section -->
         <section class="detail-card">
 
             <div>
@@ -38,12 +94,16 @@
 
                     <div class="info-item">
                         <strong>Category</strong>
-                        <span>{{ movie.category.category|default:"Not specified" }}</span>
+                        <span>
+                            {{ movie.category.category|default:"Not specified" }}
+                        </span>
                     </div>
 
                     <div class="info-item">
                         <strong>Release Date</strong>
-                        <span>{{ movie.release_date|default:"Not specified" }}</span>
+                        <span>
+                            {{ movie.release_date|default:"Not specified" }}
+                        </span>
                     </div>
 
                     <div class="info-item">
@@ -59,6 +119,7 @@
                     {{ movie.description|default:"No description available." }}
                 </p>
 
+                <!-- Movie Actions -->
                 <div class="detail-actions">
 
                     {% if movie.trailer_link %}
@@ -74,6 +135,7 @@
                     <a href="{% url 'movie_list' %}" class="btn btn-secondary">
                         Back to Movies
                     </a>
+
                     <a href="{% url 'delete_movie' movie.pk %}" class="btn btn-danger" onclick="return deleteMovie()">
                         Delete Movie
                     </a>
@@ -84,11 +146,50 @@
 
         </section>
 
+        <!-- Cast Section -->
+        <section class="cast-section">
+
+            <div class="section-heading">
+                <h2>Cast</h2>
+                <p>Meet the actors and the characters they played.</p>
+            </div>
+
+            <div class="actor-list">
+
+                {% for item in cast %}
+
+                <div class="actor-card">
+
+                    {% if item.actor.picture %}
+                    <img src="{{ item.actor.picture.url }}" alt="{{ item.actor.name }}" class="actor-image">
+                    {% else %}
+                    <div class="actor-image">
+                        No Image Available
+                    </div>
+                    {% endif %}
+
+                    <h3>{{ item.actor.name }}</h3>
+
+                    <p>{{ item.character_name }}</p>
+
+                </div>
+
+                {% empty %}
+
+                <p>No cast information available.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
     </main>
+
     <script>
-        function deleteMovie(){
-            let choice=confirm("Do you wish to delete this movie ?")
-            return choice
+        function deleteMovie() {
+            let choice = confirm("Do you wish to delete this movie?");
+            return choice;
         }
     </script>
 

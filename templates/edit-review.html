@@ -1,0 +1,23 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="add-review">
+
+    <h2>Edit Your Review</h2>
+    <h3>{{ review.movie.movie }}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <textarea name="review"
+                  rows="6"
+                  required>{{ review.review }}</textarea>
+
+        <button type="submit">Update Review</button>
+    </form>
+
+</div>
+
+{% endblock %}

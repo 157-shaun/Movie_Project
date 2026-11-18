@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="review-movies">
+
+    <h2>Select a Movie to Review</h2>
+
+    {% for movie in movies %}
+        <div class="movie-card">
+
+            <h3>{{ movie.movie }}</h3>
+
+            {% if movie.poster %}
+                <img src="{{ movie.poster.url }}"
+                     alt="{{ movie.movie }}"
+                     width="120">
+            {% endif %}
+
+            <a href="{% url 'add_review' movie.id %}">
+                Add Review
+            </a>
+
+        </div>
+    {% empty %}
+        <p>No movies available.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

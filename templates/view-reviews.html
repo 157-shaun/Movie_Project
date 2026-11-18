@@ -1,0 +1,114 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .view-reviews {
+        width: 90%;
+        max-width: 1100px;
+        margin: 40px auto;
+        color: white;
+    }
+
+    .view-reviews h2 {
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+
+    .review-card {
+        background: #1c1c1c;
+        padding: 20px;
+        margin-bottom: 18px;
+        border-radius: 10px;
+        border-left: 4px solid #e50914;
+    }
+
+    .review-card h3 {
+        color: white;
+    }
+
+    .review-card p {
+        color: #ddd;
+        white-space: pre-wrap;
+    }
+
+    .review-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .review-actions a,
+    .review-actions button {
+        display: inline-block;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .review-actions a {
+        background-color: #8b5cf6;
+    }
+
+    .review-actions a:hover {
+        background-color: #7c3aed;
+    }
+
+    .review-actions button {
+        background-color: #ef1025;
+    }
+
+    .review-actions button:hover {
+        background-color: #c90018;
+    }
+
+    .review-actions form {
+        margin: 0;
+    }
+</style>
+
+<div class="view-reviews">
+
+    <h2>Reviews for {{ movie.movie }}</h2>
+
+    {% for item in reviews %}
+        <div class="review-card">
+            <h3>{{ item.user.username }}</h3>
+            <p>{{ item.review }}</p>
+            <small>{{ item.date|date:"d M Y, h:i A" }}</small>
+        </div>
+    {% empty %}
+        <p>No reviews have been submitted for this movie yet.</p>
+    {% endfor %}
+
+    {% if my_review %}
+        <div class="review-actions">
+
+            <a href="{% url 'edit_review' my_review.id %}">
+                Edit Review
+            </a>
+
+            <form method="POST"
+                  action="{% url 'delete_review' my_review.id %}"
+                  onsubmit="return confirm('Are you sure you want to delete your review?');">
+                {% csrf_token %}
+                <button type="submit">Delete Review</button>
+            </form>
+
+        </div>
+    {% else %}
+        <a href="{% url 'add_review' movie.id %}">
+            Write a Review
+        </a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

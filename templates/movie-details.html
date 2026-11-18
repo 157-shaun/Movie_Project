@@ -132,13 +132,18 @@
                         Update Movie
                     </a>
 
-                    <a href="{% url 'movie_list' %}" class="btn btn-secondary">
-                        Back to Movies
+                      <a href="{% url 'view_reviews' movie.id %}" class="btn">
+                        View Reviews
                     </a>
 
                     <a href="{% url 'delete_movie' movie.pk %}" class="btn btn-danger" onclick="return deleteMovie()">
                         Delete Movie
                     </a>
+
+                    <a href="{% url 'movie_list' %}" class="btn btn-secondary">
+                        Back to Movies
+                    </a>
+
 
                 </div>
 

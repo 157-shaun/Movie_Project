@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from actors.models import Actors
 from movie.models import MovieCast
+from accounts.decorators import superuser_required
 # Create your views here.
 
 
@@ -12,7 +13,7 @@ def home(request):
     return render(request,"index.html")
 
 
-@login_required(login_url="login")
+@superuser_required
 def addMovie(request):
     if request.method == "POST":
 
@@ -78,7 +79,7 @@ def movieDetails(request, id):
         "movie": movie,
         "cast": cast
     })
-@login_required(login_url="login")
+@superuser_required
 def deleteMovie(request, id):
     movie = Movie.objects.get(id=id)
     movie.delete()
@@ -94,7 +95,7 @@ def category_movies(request, slug):
         {'movies': movies, 'selected_category': category},
     )
 
-@login_required(login_url="login")
+@superuser_required
 def updateMovie(request,movie_id):
     categories=Category.objects.all()
     movie=Movie.objects.get(id=movie_id)

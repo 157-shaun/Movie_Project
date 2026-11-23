@@ -11,10 +11,11 @@
             <h1>{{actor.name}}</h1>
             <img src="{{actor.picture.url}}">
             <p>{{actor.description  }}</p>
-            <a href="{% url 'update_actor' actor.id %}">Update Actor</a>
+            <a href="{% url 'update_actor' actor.id %}">Update Actor</a><br>
+            <a href="{% url 'add_actor' %}">Add Actor</a>
             
 
-            <form method="POST" action="{% url 'delete_actor' {actor.id} }" onsubmit="return confirmDelete()">
+            <form method="POST" action="{% url 'delete_actor' {actor.id} % }" onsubmit="return confirmDelete()">
                 {% csrf_token %}
                 <input type="submit" value="Delete">
             </form>

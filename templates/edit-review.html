@@ -3,21 +3,46 @@
 
 {% block content %}
 
-<div class="add-review">
+<section class="page-section">
+    <div class="container">
 
-    <h2>Edit Your Review</h2>
-    <h3>{{ review.movie.movie }}</h3>
+        <div class="form-card">
 
-    <form method="POST">
-        {% csrf_token %}
+            <h1>Edit Your Review</h1>
 
-        <textarea name="review"
-                  rows="6"
-                  required>{{ review.review }}</textarea>
+            <h2>{{ review.movie.movie }}</h2>
 
-        <button type="submit">Update Review</button>
-    </form>
+            {% if review.movie.poster %}
+                <img src="{{ review.movie.poster.url }}"
+                     alt="{{ review.movie.movie }}"
+                     class="current-poster">
+            {% endif %}
 
-</div>
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="review">Your Review</label>
+
+                    <textarea
+                        id="review"
+                        name="review"
+                        class="form-control"
+                        rows="6"
+                        required>{{ review.review }}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">
+                        Update Review
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
 
 {% endblock %}

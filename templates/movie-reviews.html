@@ -3,30 +3,54 @@
 
 {% block content %}
 
-<div class="review-movies">
+<section class="page-section">
+    <div class="container">
 
-    <h2>Select a Movie to Review</h2>
+        <div class="section-heading">
+            <h1>Select a Movie to Review</h1>
+            <p>Choose a movie and share your thoughts.</p>
+        </div>
 
-    {% for movie in movies %}
-        <div class="movie-card">
+        <div class="movie-grid">
 
-            <h3>{{ movie.movie }}</h3>
+            {% for movie in movies %}
 
-            {% if movie.poster %}
-                <img src="{{ movie.poster.url }}"
-                     alt="{{ movie.movie }}"
-                     width="120">
-            {% endif %}
+                <div class="movie-card">
 
-            <a href="{% url 'add_review' movie.id %}">
-                Add Review
-            </a>
+                    {% if movie.poster %}
+                        <img class="movie-poster"
+                             src="{{ movie.poster.url }}"
+                             alt="{{ movie.movie }}">
+                    {% else %}
+                        <div class="poster-placeholder">
+                            No Poster Available
+                        </div>
+                    {% endif %}
+
+                    <div class="movie-card-body">
+
+                        <h2>{{ movie.movie }}</h2>
+
+                        <a href="{% url 'add_review' movie.id %}"
+                           class="btn">
+                            Add Review
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="empty-state">
+                    <p>No movies available.</p>
+                </div>
+
+            {% endfor %}
 
         </div>
-    {% empty %}
-        <p>No movies available.</p>
-    {% endfor %}
 
-</div>
+    </div>
+</section>
 
 {% endblock %}

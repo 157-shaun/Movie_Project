@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Update Actor{% else %}Add Actor{% endif %} | MovieHub{% endblock %}
+
+{% block content %}
+<main class="container page-section">
+    <section class="form-card actor-form-card">
+        <h1>{% if object %}Update Actor{% else %}Add Actor{% endif %}</h1>
+        <p>{% if object %}Update {{ object.name }}'s profile details.{% else %}Add a new actor to your collection.{% endif %}</p>
+
+        {% if object and object.picture %}
+            <img class="current-poster actor-current-photo" src="{{ object.picture.url }}" alt="Current photo of {{ object.name }}">
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-errors" role="alert">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}
+                        <p class="field-error" role="alert">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button class="btn" type="submit">{% if object %}Save Changes{% else %}Add Actor{% endif %}</button>
+                <a class="btn btn-secondary" href="{% if object %}{% url 'actor_detail' object.pk %}{% else %}{% url 'list_actors' %}{% endif %}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</main>
+{% endblock %}

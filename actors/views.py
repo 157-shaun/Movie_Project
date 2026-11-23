@@ -20,7 +20,7 @@ from django.urls import reverse_lazy
 
 class AddActor(CreateView):
     models=Actors
-    template_name="add-actor.html"
+    template_name="add-update-actors.html"
     form_class=ActorForm
     success_url=reverse_lazy("list_actors")
 
@@ -34,7 +34,7 @@ class AllActors(ListView):
 class UpdateActor(UpdateView):
     model=Actors
     form_class=ActorForm
-    template_name="update-actors.html"
+    template_name="add-update-actors.html"
     success_url=reverse_lazy("list_actors")  
     
 class ActorDetail(DetailView):
